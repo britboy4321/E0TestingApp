@@ -25,7 +25,7 @@ from todo_app.todo import User              #Import simple user class
 from oauthlib.oauth2 import WebApplicationClient # Security prep work
 
 
-# import pytest   (Module 3 not completed yet but will need this stuff)
+# import pytest   (Module 3 not completed yet but will need this stuff).  new additions
 from todo_app.models.view_model import ViewModel
 from todo_app.todo import Todo
 
