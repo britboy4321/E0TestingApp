@@ -68,6 +68,13 @@ def unauthenticated():
 def load_user(user_id):
     return User(user_id)
 
+print ("Program starting right now") 
+mongopassword=os.environ["mongopassword"]           # Secure password
+# hardcoded password to go here if necessary                   
+#Set up variables we'll be using...  
+client = pymongo.MongoClient('mongodb+srv://britboy4321:' + mongopassword + '@cluster0.qfyqb.mongodb.net/myFirstDatabase?w=majority')
+
+
 login_manager.init_app(app)
 client_id=os.environ["client_id"]                   # Needed for local (non-cloud) execution
 client_secret=os.environ["client_secret"]           # For security
