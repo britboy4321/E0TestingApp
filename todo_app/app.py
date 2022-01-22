@@ -21,7 +21,7 @@ import json                         # possibly not needed
 import os        # Secrets  (local only)
 import pymongo   # required for new mongo database  
 from datetime import datetime, timedelta   # Needed for Mongo dates for 'older' records seperation
-from todo_app.todo import User              #Import simple user class
+from todo_app.todo import User              #Import simple user class entry
 from oauthlib.oauth2 import WebApplicationClient # Security prep work
 
 
