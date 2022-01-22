@@ -1,0 +1,136 @@
+{% extends "layout.html" %}
+{% block title %}To-Do App{% endblock %}
+
+{% block content %}
+
+  <div class="jumbotron"   >
+      <h1 class="display-5" style="font-family:verdana;"  ><center><strong>TESTS LISTING APP </strong> </center> </h1>
+      <h2 class="lead" style="font-family:courier;"  ><center>to track manual tests </center> </h2>
+      <h3 class="lead" style="font-family:courier;" ><center>Local Test Documentation.  Writer User.  With Oauth Sec.</center></h3>
+      <h7 class="alignleft" style="color:white;background-color:#708090 ;  float : right ; margin-block-start: 1.2em ; margin-block-end: 1em ; line-height:2em; " >
+          &nbsp;&nbsp;<input type="checkbox"   name="optradio" checked>&nbsp;&nbsp;LOGGED IN AS : &nbsp;<strong>{{passed_user_info}}</strong>  &nbsp;&nbsp;  </h7>
+
+
+  </div>
+
+
+  <div class="row" >
+
+    <div class="col-sm-12"   >
+<section class="border py-0">
+        <h2 style="color:white;background-color:#708090 ; line-height:2.00em;   " >&nbsp;&nbsp;E0 TESTS NOT STARTED&nbsp;&nbsp;  </h2>
+      <ul class="list-group mb-4" style="PADDING-LEFT: 30px " >
+        {% for eachrow in passed_items_todo %}   
+
+            <li style="line-height:3.5em;" >Item : {{eachrow['title']}}&nbsp; | &nbsp;Status is : {{eachrow['status']}} &nbsp; | &nbsp;Created on : {{eachrow['mongodate']}} &nbsp; | &nbsp;Owner  : {{eachrow['owner']}} </li>
+            <!-- <li>Item was created on :  {{eachrow['mongodate']}}</li> -->
+
+
+            <div style="display: flex ;  justify-content: left " >
+                <form action="/change_owner" method="POST"  class="form-inline">
+                    <input type="hidden" id="title" name="title" value="{{ eachrow.title }}">
+            <input type="text"  class="form-control"  id="owner" name="owner" value={{passed_user_info}}>&nbsp;&nbsp;
+          <button class="btn btn-secondary"  id='btn1' type="submit" style="color:black; background-color:WhiteSmoke;" >&nbsp;&nbsp;Change Owner&nbsp; </button>
+
+            </form>&nbsp;&nbsp;&nbsp;
+            <form action="/move_to_doing_item" method="POST">
+            <input type="hidden" class="form-control" id="todo.title" name="item_title" value="{{ eachrow.title }}">
+              <button class="btn text-right" id='btn1' type="submit" style="color:white; background-color:DeepSkyBlue  " >&nbsp;&nbsp;START  E0 TEST&nbsp; </button>
+
+            </form>
+
+
+
+
+           </div>
+            {% endfor %}
+      </ul>
+
+      <h2 style="color:white;background-color:#708090 ;  line-height:2.00em;   ">&nbsp;&nbsp;E0 TESTS IN PROGRESS&nbsp; </h2>
+
+      <ul class="list-group mb-4" style="PADDING-LEFT: 30px">
+        {% for eachrow in passed_items_doing %}   
+            <li style="line-height:3.5em;">Item : {{eachrow['title']}}&nbsp; | &nbsp;Status is : {{eachrow['status']}} &nbsp; | &nbsp;Owner  : {{eachrow['owner']}} </li>
+            
+            <form action="/move_to_done_item" method="POST">
+              <input type="hidden" id="todo.title" name="item_title" value="{{ eachrow.title }}"> 
+                <button class="btn text-right" id='btn1' type="submit"  style="color:white; background-color:MediumSeaGreen " >&nbsp;COMPLETE E0 TEST&nbsp;</button>
+
+              </form>
+
+            {% endfor %}
+      </ul>
+
+      <h2 style="color:white;background-color:#708090 ;  line-height:2.00em;   ">&nbsp;&nbsp;E0 TESTS COMPLETED&nbsp; </h2>
+
+      <ul class="list-group mb-4" style="PADDING-LEFT: 30px">
+        {% for eachrow in passed_items_done %}   
+            <li style="line-height:3.5em;" >Item : {{eachrow['title']}}&nbsp; | &nbsp;Status is : {{eachrow['status']}} &nbsp; | &nbsp;Owner  : {{eachrow['owner']}}  </li>
+
+            <form action="/move_to_todo_item" method="POST">
+              <input type="hidden" id="todo.title" name="item_title" value="{{ eachrow.title }}"> 
+                <button class="btn text-right" id='btn1' type="submit"  style="color:white; background-color:orange " >&nbsp;UNDO E0 TEST&nbsp;</button>
+            </form>
+
+
+            {% endfor %}
+     </ul>
+            <details  >
+              <summary style="PADDING-LEFT: 10px"       >Older items from E0 tests completed list</summary>
+
+            <ul class="list-group mb-4" style="PADDING-LEFT: 50px"    >
+              {% for eachrow in passed_items_olddone %}   
+
+                <li style="line-height:3.5em;">Item : {{eachrow['title']}}&nbsp; | &nbsp;Status is : {{eachrow['status']}} &nbsp; | &nbsp;Owner  : {{eachrow['owner']}}  </li>
+      
+                  <form action="/move_to_todo_item" method="POST">
+                    <input type="hidden" id="todo.title" name="item_title" value="{{ eachrow.title }}"> 
+                      <button class="btn text-right" id='btn1' type="submit" style="color:white; background-color:orange "  >&nbsp;UNDO OLD E0 TEST&nbsp;</button>
+
+                  </form>
+                  {% endfor %}
+                  </details>
+
+      </ul>
+
+
+      <h2 style="color:white; margin-block-start: 0.85em ; background-color:#708090 ;  line-height:0.05em;   ">&nbsp; </h2>
+
+
+        <!--
+        <ul class="list-group mb-4"    >
+       <center>
+       <form action="/addmongoentry" method="post"   >
+
+        <center><label for="title"  ><strong>Insert new E0 test  :&nbsp; </strong> </label>
+            <input type="text" id="title" name="title">&nbsp;&nbsp;&nbsp;<button class="button button1"  >&nbsp;Add &nbsp;</button></center>
+
+      </form>
+      </ul> -->
+
+
+    <!-- margin-block-end: 0.83em"; -->
+
+    <div  style="display: flex ; margin-block-start: 1.5em ; margin-block-end: 1.5em  ; justify-content: center ; width : 100% ">
+
+           <form action="/addmongoentry" method="post" class="form-inline" >
+
+
+               <label for="title"  >INSERT NEW E0 TEST  :&nbsp; &nbsp; </label>
+              <input type="text" class="form-control" id="title" name="title" >&nbsp;&nbsp;&nbsp;<button class="btn btn-secondary" style="color:black; background-color:WhiteSmoke;"  >ADD</button>
+            </form>&nbsp;
+           <form action="/deleteAllTests" method="post" class="form-inline" >
+          &nbsp;&nbsp;<button class="btn btn-danger" id="deleteAll" name="deleteAll"  style="color:white; background-color:IndianRed; " onclick="return confirm('Are you sure you want to delete all E0 tests?');">&nbsp;DELETE ALL E0 TESTS &nbsp;</button>
+            </form>
+
+    </div>
+
+
+
+    </div>
+</section>
+
+    </style>
+    </head>
+
+{% endblock %}

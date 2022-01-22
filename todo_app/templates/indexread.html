@@ -1,0 +1,56 @@
+{% extends "layout.html" %}
+{% block title %}Tests listing App  (to track manual tests){% endblock %}
+
+{% block content %}
+  <div class="jumbotron">
+    <h1 class="display-4">To-Do App</h1>
+    <p class="lead">Local Test Documentation  READ ONLY User.  Without write perm from Oauth Sec.</p>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <h2>MONGO Tests not yet started</h2>
+      <ul class="list-group mb-4">  
+        {% for eachrow in passed_items_todo %}   
+            <li>{{eachrow['title']," IS STATUS ",eachrow['status']}} </li>
+            <li>>This item was created on:  {{eachrow['mongodate']}}</li>
+
+            </form>
+
+            {% endfor %}
+      </ul>
+
+      <h2>MONGO Tests in progress</h2>
+
+      <ul class="list-group mb-4">  
+        {% for eachrow in passed_items_doing %}   
+            <li>{{eachrow['title']," IS STATUS ",eachrow['status']}} </li>
+
+              </form>
+
+            {% endfor %}
+      </ul>
+
+      <h2>MONGO tests done</h2>
+
+      <ul class="list-group mb-4">  
+        {% for eachrow in passed_items_done %}   
+            <li>{{eachrow['title']," IS STATUS ",eachrow['status']}} </li>
+
+            {% endfor %}
+            <details>
+              <summary>OLDER Items from MONGO done list</summary>
+     
+            <ul class="list-group mb-4">  
+              {% for eachrow in passed_items_olddone %}   
+                  <li>{{eachrow['title']," IS STATUS ",eachrow['status']}} </li>
+      
+                  {% endfor %}
+                  </details>
+
+      </ul>
+     
+    </style>
+    </head>
+
+{% endblock %}
