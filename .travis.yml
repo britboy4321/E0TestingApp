@@ -14,17 +14,17 @@ script:
 - docker run -p 5000:5000 todoapptest
 - docker build --target production -f Dockerfile --tag $DOCKERHUB_USERNAME/todoapp
   .
-- echo $dockerhub_password | docker login --username $DOCKERHUB_USERNAME --password-stdin
+# - echo $dockerhub_password | docker login --username $DOCKERHUB_USERNAME --password-stdin
 - echo "Now for the push"
 - echo "-------------------"
 - docker push $DOCKERHUB_USERNAME/todoapp
 
 # module 8 Part 3:  Continous deployment
 
-- docker pull britboy4321/todoapp      #  Ensure that we have latest version (possibly not required, for safety)
-- docker tag britboy4321/todoapp registry.heroku.com/todoappbritboy/web  # Tag it ready for Heroku
+- docker pull britboy4321/e0testingapp      #  Ensure that we have latest version (possibly not required, for safety)
+- docker tag britboy4321/e0testingapp registry.heroku.com/e0testingapp/web  # Tag it ready for Heroku
 - docker login --username=drawlinson48@gmail.com --password=$Heroku_finalpass2 registry.heroku.com
-- docker push registry.heroku.com/todoappbritboy/web   # put it onto Heroku
+- docker push registry.heroku.com/e0testingapp/web   # put it onto Heroku
 
 - echo "CONTINUOUS DEPLOYMENT SETUP COMPLETED"
 - echo "-------------------------------------"
@@ -32,7 +32,7 @@ script:
 - echo "----------------------------------"
 
 deploy:
-  provider: script 
+  provider: script
   script: 
     heroku container:release web --app todoappbritboy
   on: 

@@ -72,7 +72,7 @@ print ("Program starting right now")
 mongopassword=os.environ["mongopassword"]           # Secure password
 # hardcoded password to go here if necessary                   
 #Set up variables we'll be using...  
-client = pymongo.MongoClient('mongodb+srv://britboy4321:' + mongopassword + '@cluster0.qfyqb.mongodb.net/myFirstDatabase?w=majority')
+client = pymongo.MongoClient('mongodb+srv://britboy4321:' + mongopassword + '@cluster0.yiro1.mongodb.net/myFirstDatabase?w=majority')
 
 
 login_manager.init_app(app)
