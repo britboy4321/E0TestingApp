@@ -15,12 +15,12 @@ script:
 
 # If all is good, prepare production image
 
-- docker build --target production -f Dockerfile --tag $DOCKERHUB_USERNAME/e0testingapp:prod
-  .
+# - docker build --target production -f Dockerfile --tag $DOCKERHUB_USERNAME/e0testingapp:prod .                        # Production build
+- docker build --target development --tag $DOCKERHUB_USERNAME/e0testingapp:prod .
 # - echo $dockerhub_password | docker login --username $DOCKERHUB_USERNAME --password-stdin
 - echo "Now for the push"
 - echo "----------------"
-- docker push britboy4321/e0testingapp   
+- docker push britboy4321/e0testingapp:prod   
 
 #  Continous deployment
 
