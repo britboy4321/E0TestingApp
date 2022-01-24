@@ -1,1 +1,1 @@
-web: gunicorn dep:app
+web: python todo_app/app.py
