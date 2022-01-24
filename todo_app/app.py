@@ -78,21 +78,21 @@ client = pymongo.MongoClient('mongodb+srv://britboy4321:' + mongopassword + '@cl
 login_manager.init_app(app)
 client_id=os.environ["client_id"]                   # Needed for local (non-cloud) execution
 client_secret=os.environ["client_secret"]           # For security
-# app.logger.debug("Getting Mongo connection string")
-mongodb_connection_string = os.environ["MONGODB_CONNECTION_STRING"]    # Line 1 of 2 to use Azure MONGODB 
 
 
-# app.logger.debug("Setting client")
-client = pymongo.MongoClient(mongodb_connection_string)    #  LINE 2 of 2 to use Azure MONGODB
+##### COMMENT THE NEXT TWO LINES FOR DIRECT MONGO DB.  LEAVE THEM IN FOR ASURE COSMOS
+# mongodb_connection_string = os.environ["MONGODB_CONNECTION_STRING"]    # Line 1 of 2 to use Azure Cosmos
+# client = pymongo.MongoClient(mongodb_connection_string)                #  LINE 2 of 2 to use Azure Cosmos
+#####################################################################################
+
+
 db = client.gettingStarted              # Database to be used
 # app.logger.debug("Database to be used is... $s:", db)
 
 olddate = (datetime.now() - timedelta(days=5))   # Mongo: Used to hide staff unavailable for more than 5 days in dropdown
-#olddate = (datetime.now() - timedelta(minutes=5))
 olddate=olddate.date()
-#print (olddate , type(olddate))
-#print (olddate.date() , type(olddate))
-# olddate = (datetime.now() + timedelta(days=5))  #Uncomment this line to check 'older items'
+
+# olddate = (datetime.now() + timedelta(days=5))  #Uncomment this line to test 'older items'
                                                   # work without having to hang around for 5 days!
 ################################
 print ("Program starting right now")
@@ -187,18 +187,13 @@ def index():
 def mongoentry():
 #     app.logger.info("Mongo entry being added")           # Insert A new test title intro Mongo (if you have permission)
     write_permission_user=(current_user.name)
-    if (write_permission_user == "britboy4321"):                # Add other names here if you need write access
+    if (write_permission_user == "britboy4321"):                # Currently Hardcoded.  Add other names here if you need write access
         name = request.form['title']
-
-    #    mongodict={'title':name,'status':'todo', 'mongodate':datetime.now().strftime('%d-%m-%Y')}
         mongodict={'title':name,'status':'todo', 'mongodate':datetime.now().strftime('%d-%m-%Y') , 'owner' : current_user.name}
         print(mongodict)
         db.newposts.insert_one(mongodict)
 
     return redirect("/")
-
-
-
 
 
 @app.route('/change_owner', methods = ["POST"])

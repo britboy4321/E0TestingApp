@@ -42,6 +42,8 @@ To run locally,
 
 (poetry add oauthlib flask-login is recorded in pyproject.toml)
 
+export FLASK_APP=todo_app/app.py
+
 1)  For a security reason add this to .env file:
 
 OAUTHLIB_INSECURE_TRANSPORT=1
@@ -166,10 +168,7 @@ to run tests:
 
 docker run my-test-image .       << from base directory>>
 
-To get Mondo running on cloud: add these kines to app.py
+To force MondoDB to run on cloud: uncomment these lines to app.py
 
 mongodb_connection_string = os.environ["MONGODB_CONNECTION_STRING"]    # FOR CLOUD - insert this line later, after LOCAL is running ok.
-
-
-# app.logger.debug("Setting client")
 client = pymongo.MongoClient(mongodb_connection_string)
