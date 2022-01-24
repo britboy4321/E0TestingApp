@@ -20,7 +20,7 @@ script:
 # - echo $dockerhub_password | docker login --username $DOCKERHUB_USERNAME --password-stdin
 - echo "Now for the push"
 - echo "----------------"
-- docker push britboy4321/e0testingapp:prod    
+- docker push britboy4321/e0testingapp   
 
 #  Continous deployment
 
