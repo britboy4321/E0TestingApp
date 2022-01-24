@@ -22,7 +22,7 @@ script:
 - echo "----------------"
 - docker push britboy4321/e0testingapp:prod    
 
-# module 8 Part 3:  Continous deployment
+#  Continous deployment
 
 - docker pull britboy4321/e0testingapp:prod      #  Ensure that we have latest version (possibly not required, for safety)
 - docker tag britboy4321/e0testingapp:prod registry.heroku.com/e0testingapp/web  # Tag it ready for Heroku
