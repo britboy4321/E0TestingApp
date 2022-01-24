@@ -17,7 +17,7 @@ script:
 # - echo $dockerhub_password | docker login --username $DOCKERHUB_USERNAME --password-stdin
 - echo "Now for the push"
 - echo "-------------------"
-- docker push britboy4321/e0testingapp:prod      # VERY TEMPORARY KNOCK OUT
+# - docker push britboy4321/e0testingapp:prod      # VERY TEMPORARY KNOCK OUT
 
 # module 8 Part 3:  Continous deployment
 
