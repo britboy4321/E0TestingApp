@@ -17,7 +17,7 @@ script:
 # - echo $dockerhub_password | docker login --username $DOCKERHUB_USERNAME --password-stdin
 - echo "Now for the push"
 - echo "-------------------"
-- docker push $DOCKERHUB_USERNAME/todoapp
+- docker push $DOCKERHUB_USERNAME/e0testingapp
 
 # module 8 Part 3:  Continous deployment
 
