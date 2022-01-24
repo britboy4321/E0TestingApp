@@ -17,11 +17,11 @@ script:
 # - echo $dockerhub_password | docker login --username $DOCKERHUB_USERNAME --password-stdin
 - echo "Now for the push"
 - echo "-------------------"
-# - docker push $DOCKERHUB_USERNAME/e0testingapp      # VERY TEMPORARY KNOCK OUT
+- docker push britboy4321/e0testingapp:prod      # VERY TEMPORARY KNOCK OUT
 
 # module 8 Part 3:  Continous deployment
 
-- docker pull britboy4321/e0testingapp      #  Ensure that we have latest version (possibly not required, for safety)
+- docker pull britboy4321/e0testingapp:prod      #  Ensure that we have latest version (possibly not required, for safety)
 - docker tag britboy4321/e0testingapp registry.heroku.com/e0testingapp/web  # Tag it ready for Heroku
 - docker login --username=drawlinson48@gmail.com --password=$Heroku_finalpass2 registry.heroku.com
 - docker push registry.heroku.com/e0testingapp/web   # put it onto Heroku
