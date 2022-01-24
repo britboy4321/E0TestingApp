@@ -12,7 +12,7 @@ script:
 # Next, if all is good, we need to build and run production version of software
 - docker build --target test --tag todoapptest .
 - docker run -p 5000:5000 todoapptest
-- docker build --target production -f Dockerfile --tag $DOCKERHUB_USERNAME/todoapp
+- docker build --target production -f Dockerfile --tag $DOCKERHUB_USERNAME/e0testingapp
   .
 # - echo $dockerhub_password | docker login --username $DOCKERHUB_USERNAME --password-stdin
 - echo "Now for the push"
