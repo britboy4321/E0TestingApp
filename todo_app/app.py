@@ -6,7 +6,6 @@ from flask import Flask, render_template, request, redirect, g, url_for, session
 from flask_login import LoginManager, login_required, current_user
 from flask_login.utils import login_user
 
-# Loggly - Temporarily disabled
 
 # import logging.config
 
@@ -83,18 +82,18 @@ client_secret=os.environ["client_secret"]           # For security
 ##### COMMENT THE NEXT TWO LINES FOR DIRECT MONGO DB.  LEAVE THEM IN FOR ASURE COSMOS
 mongodb_connection_string = os.environ["MONGODB_CONNECTION_STRING"]    # Line 1 of 2 to use Azure Cosmos
 client = pymongo.MongoClient(mongodb_connection_string)                #  LINE 2 of 2 to use Azure Cosmos
-#####################################################################################
+################################################################################
 
 
 db = client.gettingStarted              # Database to be used
-# app.logger.debug("Database to be used is... $s:", db)
+
 
 olddate = (datetime.now() - timedelta(days=5))   # Mongo: Used to hide staff unavailable for more than 5 days in dropdown
 olddate=olddate.date()
 
 # olddate = (datetime.now() + timedelta(days=5))  #Uncomment this line to test 'older items'
                                                   # work without having to hang around for 5 days!
-################################
+
 print ("Program starting right now")
 
 
@@ -112,13 +111,7 @@ def index():
     mongosuperlist = list(db.newposts.find())
 
 
-#LOGGING - removed at the moment
 
-#    if LOGGLY_TOKEN is not None:
-#        handler = HTTPSHandler(f'https://logs-01.loggly.com/inputs/{LOGGLY_TOKEN}/tag/todo-app')
-#        handler.setFormatter(Formatter("[%(asctime)s] %(levelname)s in %(module)s: %(message)s")
-#       )
-#        app.logger.addHandler(handler)
 
 
     counter=0                                           
@@ -156,9 +149,7 @@ def index():
     print("CURRENT USER ROLE:")
     print(current_user_role)                            
 
-   # If statement to go here:
-   
-    # allow_edit = (current_user.name)
+
     current_date = datetime.today().strftime('%d-%m-%Y')
     user = str(current_user.name).upper()
     if (current_user_role == "writer"):                 # Can now handle multiple users
@@ -185,7 +176,7 @@ def index():
 @app.route('/addmongoentry', methods = ["POST"])
 @login_required
 def mongoentry():
-#     app.logger.info("Mongo entry being added")           # Insert A new test title intro Mongo (if you have permission)
+
     write_permission_user=(current_user.name)
     if (write_permission_user == "britboy4321"):                # Currently Hardcoded.  Add other names here if you need write access
         name = request.form['title']
@@ -199,7 +190,7 @@ def mongoentry():
 @app.route('/change_owner', methods = ["POST"])
 @login_required
 def update_owner():
-    #code to update the owner of a specific test
+ 
     write_permission_user=(current_user.name)
     if (write_permission_user == "britboy4321"):
         NewOwner = request.form['owner']
@@ -215,7 +206,7 @@ def update_owner():
 @app.route('/deleteAllTests', methods = ["POST"])
 @login_required
 def deleteAll():
-    #code to update the owner of a specific test
+
     write_permission_user=(current_user.name)
     if (write_permission_user == "britboy4321"):
 
