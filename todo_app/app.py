@@ -6,7 +6,6 @@ from flask import Flask, render_template, request, redirect, g, url_for, session
 from flask_login import LoginManager, login_required, current_user
 from flask_login.utils import login_user
 
-# Loggly - Temporarily disabled
 
 # import logging.config
 
@@ -21,11 +20,11 @@ import json                         # possibly not needed
 import os        # Secrets  (local only)
 import pymongo   # required for new mongo database  
 from datetime import datetime, timedelta   # Needed for Mongo dates for 'older' records seperation
-from todo_app.todo import User              #Import simple user class
+from todo_app.todo import User              #Import simple user class entry
 from oauthlib.oauth2 import WebApplicationClient # Security prep work
 
 
-# import pytest   (Module 3 not completed yet but will need this stuff)
+# import pytest   (Module 3 not completed yet but will need this stuff).  new additions
 from todo_app.models.view_model import ViewModel
 from todo_app.todo import Todo
 
@@ -72,29 +71,29 @@ print ("Program starting right now")
 mongopassword=os.environ["mongopassword"]           # Secure password
 # hardcoded password to go here if necessary                   
 #Set up variables we'll be using...  
-client = pymongo.MongoClient('mongodb+srv://britboy4321:' + mongopassword + '@cluster0.qfyqb.mongodb.net/myFirstDatabase?w=majority')
+client = pymongo.MongoClient('mongodb+srv://britboy4321:' + mongopassword + '@cluster0.yiro1.mongodb.net/myFirstDatabase?w=majority')
 
 
 login_manager.init_app(app)
 client_id=os.environ["client_id"]                   # Needed for local (non-cloud) execution
 client_secret=os.environ["client_secret"]           # For security
-# app.logger.debug("Getting Mongo connection string")
-mongodb_connection_string = os.environ["MONGODB_CONNECTION_STRING"]    # Line 1 of 2 to use Azure MONGODB 
 
 
-# app.logger.debug("Setting client")
-client = pymongo.MongoClient(mongodb_connection_string)    #  LINE 2 of 2 to use Azure MONGODB
+##### COMMENT THE NEXT TWO LINES FOR DIRECT MONGO DB.  LEAVE THEM IN FOR ASURE COSMOS
+mongodb_connection_string = os.environ["MONGODB_CONNECTION_STRING"]    # Line 1 of 2 to use Azure Cosmos
+client = pymongo.MongoClient(mongodb_connection_string)                #  LINE 2 of 2 to use Azure Cosmos
+################################################################################
+
+
 db = client.gettingStarted              # Database to be used
-# app.logger.debug("Database to be used is... $s:", db)
+
 
 olddate = (datetime.now() - timedelta(days=5))   # Mongo: Used to hide staff unavailable for more than 5 days in dropdown
-#olddate = (datetime.now() - timedelta(minutes=5))
 olddate=olddate.date()
-#print (olddate , type(olddate))
-#print (olddate.date() , type(olddate))
-# olddate = (datetime.now() + timedelta(days=5))  #Uncomment this line to check 'older items'
+
+# olddate = (datetime.now() + timedelta(days=5))  #Uncomment this line to test 'older items'
                                                   # work without having to hang around for 5 days!
-################################
+
 print ("Program starting right now")
 
 
@@ -112,13 +111,7 @@ def index():
     mongosuperlist = list(db.newposts.find())
 
 
-#LOGGING - removed at the moment
 
-#    if LOGGLY_TOKEN is not None:
-#        handler = HTTPSHandler(f'https://logs-01.loggly.com/inputs/{LOGGLY_TOKEN}/tag/todo-app')
-#        handler.setFormatter(Formatter("[%(asctime)s] %(levelname)s in %(module)s: %(message)s")
-#       )
-#        app.logger.addHandler(handler)
 
 
     counter=0                                           
@@ -156,9 +149,7 @@ def index():
     print("CURRENT USER ROLE:")
     print(current_user_role)                            
 
-   # If statement to go here:
-   
-    # allow_edit = (current_user.name)
+
     current_date = datetime.today().strftime('%d-%m-%Y')
     user = str(current_user.name).upper()
     if (current_user_role == "writer"):                 # Can now handle multiple users
@@ -185,12 +176,10 @@ def index():
 @app.route('/addmongoentry', methods = ["POST"])
 @login_required
 def mongoentry():
-#     app.logger.info("Mongo entry being added")           # Insert A new test title intro Mongo (if you have permission)
-    write_permission_user=(current_user.name)
-    if (write_permission_user == "britboy4321"):                # Add other names here if you need write access
-        name = request.form['title']
 
-    #    mongodict={'title':name,'status':'todo', 'mongodate':datetime.now().strftime('%d-%m-%Y')}
+    write_permission_user=(current_user.name)
+    if (write_permission_user == "britboy4321"):                # Currently Hardcoded.  Add other names here if you need write access
+        name = request.form['title']
         mongodict={'title':name,'status':'todo', 'mongodate':datetime.now().strftime('%d-%m-%Y') , 'owner' : current_user.name}
         print(mongodict)
         db.newposts.insert_one(mongodict)
@@ -198,13 +187,10 @@ def mongoentry():
     return redirect("/")
 
 
-
-
-
 @app.route('/change_owner', methods = ["POST"])
 @login_required
 def update_owner():
-    #code to update the owner of a specific test
+ 
     write_permission_user=(current_user.name)
     if (write_permission_user == "britboy4321"):
         NewOwner = request.form['owner']
@@ -220,7 +206,7 @@ def update_owner():
 @app.route('/deleteAllTests', methods = ["POST"])
 @login_required
 def deleteAll():
-    #code to update the owner of a specific test
+
     write_permission_user=(current_user.name)
     if (write_permission_user == "britboy4321"):
 

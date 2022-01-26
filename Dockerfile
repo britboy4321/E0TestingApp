@@ -24,7 +24,7 @@ RUN LATEST=`curl -sSL https://chromedriver.storage.googleapis.com/LATEST_RELEASE
 
 # Selenium Setup 
 
-
+# TBC
 
 # Get application files required and place in correct subdirectories
 WORKDIR /app
@@ -43,6 +43,12 @@ COPY ./todo_app/test_unit.py ./todo_app/test_unit.py
 COPY ./todo_app/test_integration.py ./todo_app/test_integration.py
 COPY ./todo_app/test_e2e.py ./todo_app/test_e2e.py
 
+
+# Test Files
+
+COPY ./Quotetest.py ./Quotetest.py
+COPY ./PricingTest.py ./PricingTest.py
+
 #Install Poetry
 
 RUN poetry config virtualenvs.create false --local && poetry install
@@ -56,8 +62,7 @@ FROM base as production
 
 ENTRYPOINT poetry run gunicorn --bind 0.0.0.0:$PORT todo_app.wsgi:app
 # ENTRYPOINT poetry run gunicorn --bind 0.0.0.0:$PORT
-# ENTRYPOINT "poetry run flask run --host=0.0.0.0:$PORT"
-# ENTRYPOINT "poetry run flask run"
+
 #Development Flask
 
 FROM base as development

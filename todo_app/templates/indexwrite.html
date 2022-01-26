@@ -23,7 +23,6 @@
         {% for eachrow in passed_items_todo %}   
 
             <li style="line-height:3.5em;" >Item : {{eachrow['title']}}&nbsp; | &nbsp;Status is : {{eachrow['status']}} &nbsp; | &nbsp;Created on : {{eachrow['mongodate']}} &nbsp; | &nbsp;Owner  : {{eachrow['owner']}} </li>
-            <!-- <li>Item was created on :  {{eachrow['mongodate']}}</li> -->
 
 
             <div style="display: flex ;  justify-content: left " >
@@ -38,9 +37,6 @@
               <button class="btn text-right" id='btn1' type="submit" style="color:white; background-color:DeepSkyBlue  " >&nbsp;&nbsp;START  E0 TEST&nbsp; </button>
 
             </form>
-
-
-
 
            </div>
             {% endfor %}
@@ -97,19 +93,7 @@
       <h2 style="color:white; margin-block-start: 0.85em ; background-color:#708090 ;  line-height:0.05em;   ">&nbsp; </h2>
 
 
-        <!--
-        <ul class="list-group mb-4"    >
-       <center>
-       <form action="/addmongoentry" method="post"   >
 
-        <center><label for="title"  ><strong>Insert new E0 test  :&nbsp; </strong> </label>
-            <input type="text" id="title" name="title">&nbsp;&nbsp;&nbsp;<button class="button button1"  >&nbsp;Add &nbsp;</button></center>
-
-      </form>
-      </ul> -->
-
-
-    <!-- margin-block-end: 0.83em"; -->
 
     <div  style="display: flex ; margin-block-start: 1.5em ; margin-block-end: 1.5em  ; justify-content: center ; width : 100% ">
 
@@ -124,8 +108,6 @@
             </form>
 
     </div>
-
-
 
     </div>
 </section>
