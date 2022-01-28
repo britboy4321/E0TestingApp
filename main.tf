@@ -41,7 +41,7 @@ resource "azurerm_app_service" "main" {
   app_service_plan_id = azurerm_app_service_plan.main.id
   site_config {
     app_command_line = ""
-    linux_fx_version = "DOCKER|britboy4321/todoapp:latest"
+    linux_fx_version = "DOCKER|britboy4321/e0testingapp:prod"
   }
   app_settings = {
         # For some reason primary_key was not accepted in azurerm_cosmosdb_account, so hardcoded here instead.  It works.
