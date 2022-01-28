@@ -61,4 +61,4 @@ urllib3==1.26.5
 virtualenv==20.4.7
 webencodings==0.5.1
 Werkzeug==2.0.1
-Flask-Login==0.3.2
+Flask-Login==0.4.0
