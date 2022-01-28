@@ -6,5 +6,5 @@
     "python.testing.unittestEnabled": false,
     "python.testing.nosetestsEnabled": false,
     "python.testing.pytestEnabled": true,
-    "azureFunctions.scmDoBuildDeployment": true
+    "azureFunctions.scmDoBuildDuringDeployment": true
 }
