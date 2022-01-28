@@ -47,7 +47,7 @@ LOGGLY_TOKEN = os.environ["LOGGLY_TOKEN"]
 login_manager = LoginManager()
 client_id=os.environ["client_id"] 
 Clientsecurity = WebApplicationClient(client_id)
-LOG_LEVEL=os.environ["LOG_LEVEL"]
+#  LOG_LEVEL=os.environ["LOG_LEVEL"]
 @login_manager.unauthorized_handler
 def unauthenticated():
     print("Unauthorised, yet!  You need to add your github name to code below (currently only allows Britboy4321 access to 'write' screen)")
