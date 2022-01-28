@@ -7,10 +7,7 @@ from flask_login import LoginManager, login_required, current_user
 from flask_login.utils import login_user
 
 
-# import logging.config
 
-# from loggly.handlers import HTTPSHandler   
-# from logging import Formatter
 import os, sys
 print ("Current working directory : %s" % os.getcwd()    )
 
