@@ -35,7 +35,7 @@ pexpect==4.8.0
 pip-tools==1.11.0
 pkginfo==1.7.0
 pluggy==0.13.1
-poetry==1.1.6
+poetry
 poetry-core==1.0.3
 ptyprocess==0.7.0
 py==1.10.0
