@@ -67,3 +67,4 @@ pyjwt>=2.0.0,<3
 blinker==1.4
 cryptography>=3.0.0
 oauthlib
+dnspython
