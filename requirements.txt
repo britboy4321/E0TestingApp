@@ -43,7 +43,7 @@ Pygments==2.9.0
 pylev==1.4.0
 pymongo==4.0.1
 pyparsing==2.4.7
-pypoet==0.4.1
+pypoet
 pytest==6.2.4
 python-dotenv==0.19.2
 pywin32-ctypes==0.2.0
