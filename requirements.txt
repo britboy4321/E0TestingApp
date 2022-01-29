@@ -63,3 +63,6 @@ webencodings==0.5.1
 Werkzeug==2.0.1
 Flask-Login==0.4.0
 python-dateutil
+pyjwt>=2.0.0,<3
+blinker==1.4
+cryptography>=3.0.0
