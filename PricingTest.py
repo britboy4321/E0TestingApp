@@ -1,3 +1,5 @@
+# A pricing test mocker that mocks a successful test
+
 from threading import Event
 print('Pricing test beginning')
 Event().wait(2)

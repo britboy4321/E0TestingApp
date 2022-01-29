@@ -24,6 +24,7 @@ data "azurerm_resource_group" "main" {name= "britboyresourcegroup"}
 resource "azurerm_app_service_plan" "main" {
   name = "terraformed-asp"
   location = var.location
+  # var from variables.tf
   resource_group_name = data.azurerm_resource_group.main.name
   kind= "Linux"
   reserved= true
@@ -35,7 +36,7 @@ resource "azurerm_app_service_plan" "main" {
 }
 
 resource "azurerm_app_service" "main" {
-  name= "${var.prefix}britboytodolistsuper"
+  name= "${var.prefix}e0testingapp"
   location= data.azurerm_resource_group.main.location
   resource_group_name = data.azurerm_resource_group.main.name
   app_service_plan_id = azurerm_app_service_plan.main.id
@@ -79,14 +80,15 @@ resource "azurerm_cosmosdb_account" "main" {
     name = "mongoEnableDocLevelTTL"
   }
   capabilities {
-   name = "AllowSelfServeUpgradeToMongo36" # Found on google
+   name = "AllowSelfServeUpgradeToMongo36" # Found on google to get past issue
   }
   capabilities {
     name = "EnableMongo"
   }
-  location = "West Europe"
+  location = "uk south"
+   # var NOT from variables.tf
   geo_location {  
-  location = "West Europe"
+  location = "uk south"
   failover_priority = "0"
   }
   consistency_policy {

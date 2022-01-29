@@ -1,3 +1,5 @@
+# A pricing test mocker that mocks a FAILED test
+
 from threading import Event
 print('Quoting test beginning')
 Event().wait(2)
