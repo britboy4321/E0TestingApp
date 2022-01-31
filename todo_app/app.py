@@ -6,8 +6,12 @@ from flask import Flask, render_template, request, redirect, g, url_for, session
 from flask_login import LoginManager, login_required, current_user
 from flask_login.utils import login_user
 
+# Loggly - Temporarily disabled
 
+# import logging.config
 
+# from loggly.handlers import HTTPSHandler   
+# from logging import Formatter
 import os, sys
 print ("Current working directory : %s" % os.getcwd()    )
 
@@ -17,11 +21,11 @@ import json                         # possibly not needed
 import os        # Secrets  (local only)
 import pymongo   # required for new mongo database  
 from datetime import datetime, timedelta   # Needed for Mongo dates for 'older' records seperation
-from todo_app.todo import User              #Import simple user class entry
+from todo_app.todo import User              #Import simple user class
 from oauthlib.oauth2 import WebApplicationClient # Security prep work
 
-
-# import pytest   (Module 3 not completed yet but will need this stuff).  new additions
+#image= "empty2.png"
+# import pytest   (Module 3 not completed yet but will need this stuff)
 from todo_app.models.view_model import ViewModel
 from todo_app.todo import Todo
 
@@ -47,7 +51,7 @@ LOGGLY_TOKEN = os.environ["LOGGLY_TOKEN"]
 login_manager = LoginManager()
 client_id=os.environ["client_id"] 
 Clientsecurity = WebApplicationClient(client_id)
-#  LOG_LEVEL=os.environ["LOG_LEVEL"]
+LOG_LEVEL=os.environ["LOG_LEVEL"]
 @login_manager.unauthorized_handler
 def unauthenticated():
     print("Unauthorised, yet!  You need to add your github name to code below (currently only allows Britboy4321 access to 'write' screen)")
@@ -64,37 +68,30 @@ def unauthenticated():
 def load_user(user_id):
     return User(user_id)
 
-print ("Program starting right now") 
-mongopassword=os.environ["mongopassword"]           # Secure password
-# hardcoded password to go here if necessary                   
-#Set up variables we'll be using...  
-client = pymongo.MongoClient('mongodb+srv://britboy4321:' + mongopassword + '@cluster0.yiro1.mongodb.net/myFirstDatabase?w=majority')
-
-
 login_manager.init_app(app)
 client_id=os.environ["client_id"]                   # Needed for local (non-cloud) execution
 client_secret=os.environ["client_secret"]           # For security
+# app.logger.debug("Getting Mongo connection string")
+# mongodb_connection_string = os.environ["MONGODB_CONNECTION_STRING"]    # FOR CLOUD - insert this line later, after LOCAL is running ok.
 
 
-##### COMMENT THE NEXT TWO LINES FOR DIRECT MONGO DB.  LEAVE THEM IN FOR ASURE COSMOS
-mongodb_connection_string = os.environ["MONGODB_CONNECTION_STRING"]    # Line 1 of 2 to use Azure Cosmos
-client = pymongo.MongoClient(mongodb_connection_string)                #  LINE 2 of 2 to use Azure Cosmos
-################################################################################
-
-
+# app.logger.debug("Setting client")
+# client = pymongo.MongoClient(mongodb_connection_string)
 db = client.gettingStarted              # Database to be used
-
+# app.logger.debug("Database to be used is... $s:", db)
 
 olddate = (datetime.now() - timedelta(days=5))   # Mongo: Used to hide staff unavailable for more than 5 days in dropdown
+#olddate = (datetime.now() - timedelta(minutes=5))
 olddate=olddate.date()
-
-# olddate = (datetime.now() + timedelta(days=5))  #Uncomment this line to test 'older items'
+#print (olddate , type(olddate))
+#print (olddate.date() , type(olddate))
+# olddate = (datetime.now() + timedelta(days=5))  #Uncomment this line to check 'older items'
                                                   # work without having to hang around for 5 days!
-
+################################
 print ("Program starting right now")
-
-
+#image = "empty2.png"
 #  Create the various lists depending on status
+
 
 @app.route('/', methods = ["GET","PUT"])
 @login_required
@@ -108,7 +105,13 @@ def index():
     mongosuperlist = list(db.newposts.find())
 
 
+#LOGGING - removed at the moment
 
+#    if LOGGLY_TOKEN is not None:
+#        handler = HTTPSHandler(f'https://logs-01.loggly.com/inputs/{LOGGLY_TOKEN}/tag/todo-app')
+#        handler.setFormatter(Formatter("[%(asctime)s] %(levelname)s in %(module)s: %(message)s")
+#       )
+#        app.logger.addHandler(handler)
 
 
     counter=0                                           
@@ -146,12 +149,20 @@ def index():
     print("CURRENT USER ROLE:")
     print(current_user_role)                            
 
-
+   # If statement to go here:
+   
+    # allow_edit = (current_user.name)
     current_date = datetime.today().strftime('%d-%m-%Y')
     user = str(current_user.name).upper()
+
+
+
+
     if (current_user_role == "writer"):                 # Can now handle multiple users
         return render_template('indexwrite.html',        # If user allowed to write:
         passed_user_info=user,
+
+
         passed_items_todo=mongo_view_model,             # Mongo To Do
         passed_items_doing=mongo_view_model_doing,      # Mongo Doing
         passed_items_done=mongo_view_model_done,        # Mongo Done
@@ -162,6 +173,8 @@ def index():
     else:
         return render_template('indexread.html',
         passed_user_info=user,# If user NOT allowed to write - instead go to 'indexread.html' - the 'read only' version of the site:
+
+
         passed_items_todo=mongo_view_model,             # Mongo To Do
         passed_items_doing=mongo_view_model_doing,      # Mongo Doing
         passed_items_done=mongo_view_model_done,        # Mongo Done
@@ -173,10 +186,12 @@ def index():
 @app.route('/addmongoentry', methods = ["POST"])
 @login_required
 def mongoentry():
-
+#     app.logger.info("Mongo entry being added")           # Insert A new test title intro Mongo (if you have permission)
     write_permission_user=(current_user.name)
-    if (write_permission_user == "britboy4321"):                # Currently Hardcoded.  Add other names here if you need write access
+    if (write_permission_user == "britboy4321"):                # Add other names here if you need write access
         name = request.form['title']
+
+    #    mongodict={'title':name,'status':'todo', 'mongodate':datetime.now().strftime('%d-%m-%Y')}
         mongodict={'title':name,'status':'todo', 'mongodate':datetime.now().strftime('%d-%m-%Y') , 'owner' : current_user.name}
         print(mongodict)
         db.newposts.insert_one(mongodict)
@@ -184,10 +199,13 @@ def mongoentry():
     return redirect("/")
 
 
+
+
+
 @app.route('/change_owner', methods = ["POST"])
 @login_required
 def update_owner():
- 
+    #code to update the owner of a specific test
     write_permission_user=(current_user.name)
     if (write_permission_user == "britboy4321"):
         NewOwner = request.form['owner']
@@ -200,10 +218,73 @@ def update_owner():
 
     return redirect("/")
 
+
+
+
+@app.route('/test_script', methods = ["PUT","GET","POST"])
+@login_required
+def test_script():
+    image = "wrong.png"
+    write_permission_user=(current_user.name)
+    if (write_permission_user == "britboy4321"):
+
+        title = request.form['doing_title']
+        script_name = request.form['script']
+
+        #import script_name
+        try :
+          x=exec(open("todo_app\Test Scripts\\" + script_name).read())
+          with open("todo_app\Test Scripts\\" + script_name, 'r') as f:
+              test_result = f.readlines()[-1].strip(" ")
+
+          test_result = test_result.strip("print('")
+          test_result = test_result[:-2]
+
+          print(test_result)
+          if (test_result == "FAIL"):
+
+              image = "wrong.png"
+              myquery = {"title": title}
+              newvalues = {"$set": {"Test_script": "Failed"}}
+              db.newposts.update_one(myquery, newvalues)
+
+          elif (test_result == "SUCCESS"):
+
+              image = "right.png"
+              myquery = {"title": title}
+              newvalues = {"$set": {"Test_script": "Success"}}
+              db.newposts.update_one(myquery, newvalues)
+
+          else:
+
+              image = "empty2.png"
+              myquery = {"title": title}
+              newvalues = {"$set": {"Test_script": "Test not valid"}}
+              db.newposts.update_one(myquery, newvalues)
+
+
+        except FileNotFoundError :
+            myquery = {"title": title}
+            newvalues = {"$set": {"Test_script": "testfile not found"}}
+            db.newposts.update_one(myquery, newvalues)
+
+
+
+    return redirect("/")
+    #return redirect(url_for("index", passed_test_image="wrong.png"))
+
+'''
+    except :
+
+        myquery = {"title": title}
+        newvalues = {"$set": {"Test_script": "not started"}}
+        db.newposts.update_one(myquery, newvalues)
+    '''
+
 @app.route('/deleteAllTests', methods = ["POST"])
 @login_required
 def deleteAll():
-
+    #code to update the owner of a specific test
     write_permission_user=(current_user.name)
     if (write_permission_user == "britboy4321"):
 
@@ -230,7 +311,7 @@ def move_to_doing_item():           # Called to move an entry to 'doing' or 'MON
     if (write_permission_user == "britboy4321"):        # Add other names here if you need write access and you are not britboy4321!
         title = request.form['item_title']
         myquery = { "title": title }
-        newvalues = { "$set": { "status": "doing" } }
+        newvalues = { "$set": { "status": "doing" , "Test_script" : "not started" } }
         db.newposts.update_one(myquery, newvalues)
         for doc in db.newposts.find():  
             print(doc)
@@ -258,7 +339,7 @@ def move_to_todo_item():            # Called to move a 'card' BACK to 'Test not 
     if (write_permission_user == "britboy4321"):        # Add other names here if you need write access and you are not britboy4321!
         title = request.form['item_title']
         myquery = { "title": title }
-        newvalues = { "$set": { "status": "todo" } }
+        newvalues = { "$set": { "status": "todo", "Test_script" : "not started"   } }
         db.newposts.update_one(myquery, newvalues)
         for doc in db.newposts.find():  
             print(doc)

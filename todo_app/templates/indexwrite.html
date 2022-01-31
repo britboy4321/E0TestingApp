@@ -22,7 +22,8 @@
       <ul class="list-group mb-4" style="PADDING-LEFT: 30px " >
         {% for eachrow in passed_items_todo %}   
 
-            <li style="line-height:3.5em;" >Item : {{eachrow['title']}}&nbsp; | &nbsp;Status is : {{eachrow['status']}} &nbsp; | &nbsp;Created on : {{eachrow['mongodate']}} &nbsp; | &nbsp;Owner  : {{eachrow['owner']}} </li>
+            <li style="line-height:3.5em;" >Item : {{eachrow['title']}}&nbsp; |  &nbsp;Created on : {{eachrow['mongodate']}} &nbsp; | &nbsp;Owner  : {{eachrow['owner']}} </li>
+            <!-- <li>Item was created on :  {{eachrow['mongodate']}}</li> -->
 
 
             <div style="display: flex ;  justify-content: left " >
@@ -38,6 +39,9 @@
 
             </form>
 
+
+
+
            </div>
             {% endfor %}
       </ul>
@@ -46,14 +50,63 @@
 
       <ul class="list-group mb-4" style="PADDING-LEFT: 30px">
         {% for eachrow in passed_items_doing %}   
-            <li style="line-height:3.5em;">Item : {{eachrow['title']}}&nbsp; | &nbsp;Status is : {{eachrow['status']}} &nbsp; | &nbsp;Owner  : {{eachrow['owner']}} </li>
+            <li style="line-height:3.5em; ">Item : {{eachrow['title']}}&nbsp; | &nbsp;Owner  : {{eachrow['owner']}}  </li>
             
-            <form action="/move_to_done_item" method="POST">
+
+          <div >
+          <form action="/move_to_done_item" method="POST" style = " float : left ; margin-right: 16.0em;">
               <input type="hidden" id="todo.title" name="item_title" value="{{ eachrow.title }}"> 
                 <button class="btn text-right" id='btn1' type="submit"  style="color:white; background-color:MediumSeaGreen " >&nbsp;COMPLETE E0 TEST&nbsp;</button>
 
               </form>
 
+
+              <!-- margin-right: 4.5em; -->
+              <form action="/test_script" method="POST"  class="form-inline"  >
+                 &nbsp; <label style="line-height:2.2em;"  >&nbsp;&nbsp;TEST SCRIPT :&nbsp; </label> &nbsp;
+                  <input type="hidden" class="form-control" id="doing.title" name="doing_title" value="{{ eachrow.title }}">
+                  <input type="text"  class="form-control"  id="script" name="script" value="">&nbsp;&nbsp;
+                  <button class="btn btn-secondary" id='run_script' type="submit"  style="color:black; background-color:WhiteSmoke; " >&nbsp;RUN&nbsp;</button>&nbsp;&nbsp;
+
+                  <!-- {{eachrow.Test_script}} -->
+                  {% if  eachrow.Test_script  == "Failed" %}
+
+                  &nbsp;<img src="{{ url_for('static', filename= 'wrong.png'    ) }}" , width="30" height="30" />
+                  <label style=" color:IndianRed;  "  >&nbsp;TEST FAILED ! &nbsp; </label>
+
+                  {% elif eachrow.Test_script  == "Success"  %}
+
+                   <img src="{{ url_for('static', filename= 'right.png'    ) }}" , width="45" height="35" />
+                   <label style=" color:green;  " >TEST SUCCEEDED </label>
+
+                 {% elif eachrow.Test_script  == "testfile not found"  %}
+
+                   &nbsp;<img src="{{ url_for('static', filename= 'empty2.png'    ) }}" , width="30" height="30" />
+                   <label   >&nbsp;TEST NOT FOUND !&nbsp; </label>
+
+                  {% elif eachrow.Test_script  == "Test not valid"  %}
+
+                   &nbsp;<img src="{{ url_for('static', filename= 'empty2.png'    ) }}" , width="30" height="30" />
+                   <label >&nbsp;TEST NOT VALID&nbsp; </label>
+
+
+                  {% else  %}
+
+                 &nbsp;<img src="{{ url_for('static', filename= 'empty2.png'    ) }}" , width="30" height="30" />
+                   <label >&nbsp;TEST NOT STARTED </label>
+
+
+                  {% endif %}
+            </form>
+
+
+
+
+            </div>
+
+            <!-- <label style=" display: flex ;  justify-content: right  ;  margin-right: 16.0em; margin-block-start: 0.2em ;  color:IndianRed;  "  >&nbsp;&nbsp;TEST FAILED&nbsp; </label> -->
+
+          <!-- justify-content: left   -->
             {% endfor %}
       </ul>
 
@@ -61,7 +114,7 @@
 
       <ul class="list-group mb-4" style="PADDING-LEFT: 30px">
         {% for eachrow in passed_items_done %}   
-            <li style="line-height:3.5em;" >Item : {{eachrow['title']}}&nbsp; | &nbsp;Status is : {{eachrow['status']}} &nbsp; | &nbsp;Owner  : {{eachrow['owner']}}  </li>
+            <li style="line-height:3.5em;" >Item : {{eachrow['title']}}&nbsp; | &nbsp;Owner  : {{eachrow['owner']}}  </li>
 
             <form action="/move_to_todo_item" method="POST">
               <input type="hidden" id="todo.title" name="item_title" value="{{ eachrow.title }}"> 
@@ -93,7 +146,19 @@
       <h2 style="color:white; margin-block-start: 0.85em ; background-color:#708090 ;  line-height:0.05em;   ">&nbsp; </h2>
 
 
+        <!--
+        <ul class="list-group mb-4"    >
+       <center>
+       <form action="/addmongoentry" method="post"   >
 
+        <center><label for="title"  ><strong>Insert new E0 test  :&nbsp; </strong> </label>
+            <input type="text" id="title" name="title">&nbsp;&nbsp;&nbsp;<button class="button button1"  >&nbsp;Add &nbsp;</button></center>
+
+      </form>
+      </ul> -->
+
+
+    <!-- margin-block-end: 0.83em"; -->
 
     <div  style="display: flex ; margin-block-start: 1.5em ; margin-block-end: 1.5em  ; justify-content: center ; width : 100% ">
 
@@ -108,6 +173,8 @@
             </form>
 
     </div>
+
+
 
     </div>
 </section>
