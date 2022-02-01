@@ -41,7 +41,6 @@ db = client.gettingStarted
 
 app.secret_key = os.environ["SECRET_KEY"]
 
-##  Set token for module 13 - loggly    (no need to disable)
 
 LOGGLY_TOKEN = os.environ["LOGGLY_TOKEN"]
 
@@ -72,11 +71,11 @@ login_manager.init_app(app)
 client_id=os.environ["client_id"]                   # Needed for local (non-cloud) execution
 client_secret=os.environ["client_secret"]           # For security
 # app.logger.debug("Getting Mongo connection string")
-# mongodb_connection_string = os.environ["MONGODB_CONNECTION_STRING"]    # FOR CLOUD - insert this line later, after LOCAL is running ok.
+mongodb_connection_string = os.environ["MONGODB_CONNECTION_STRING"]    # FOR CLOUD - insert this line later, after LOCAL is running ok.
 
 
 # app.logger.debug("Setting client")
-# client = pymongo.MongoClient(mongodb_connection_string)
+client = pymongo.MongoClient(mongodb_connection_string)
 db = client.gettingStarted              # Database to be used
 # app.logger.debug("Database to be used is... $s:", db)
 
