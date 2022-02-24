@@ -69,3 +69,4 @@ cryptography>=3.0.0
 oauthlib
 dnspython
 markupsafe==2.0.1
+pytest
