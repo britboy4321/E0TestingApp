@@ -2,10 +2,24 @@
 
 # Flask
 
+#FLASK_APP=run.py
+
+#export FLASK_APP=server.py
+#export FLASK_DEBUG=1
+
+#export FLASK_APP=autoapp.py
+#export FLASK_DEBUG=1
+
+#export FLASK_APP=app.py
+
+#python -m flask run
+
+#python run-app.py
+
 from flask import Flask, render_template, request, redirect, g, url_for, session
 from flask_login import LoginManager, login_required, current_user
 from flask_login.utils import login_user
-
+# import autodynatrace
 # Loggly - Temporarily disabled
 
 # import logging.config
@@ -14,7 +28,7 @@ from flask_login.utils import login_user
 # from logging import Formatter
 import os, sys
 print ("Current working directory : %s" % os.getcwd()    )
-
+from flask import flash
 # from flask import LoginManager and login required
 import requests                     # Import the whole of requests
 import json                         # possibly not needed
@@ -41,6 +55,7 @@ db = client.gettingStarted
 
 app.secret_key = os.environ["SECRET_KEY"]
 
+##  Set token for module 13 - loggly    (no need to disable)
 
 LOGGLY_TOKEN = os.environ["LOGGLY_TOKEN"]
 
@@ -71,11 +86,11 @@ login_manager.init_app(app)
 client_id=os.environ["client_id"]                   # Needed for local (non-cloud) execution
 client_secret=os.environ["client_secret"]           # For security
 # app.logger.debug("Getting Mongo connection string")
-mongodb_connection_string = os.environ["MONGODB_CONNECTION_STRING"]    # FOR CLOUD - insert this line later, after LOCAL is running ok.
+# mongodb_connection_string = os.environ["MONGODB_CONNECTION_STRING"]    # FOR CLOUD - insert this line later, after LOCAL is running ok.
 
 
 # app.logger.debug("Setting client")
-client = pymongo.MongoClient(mongodb_connection_string)
+# client = pymongo.MongoClient(mongodb_connection_string)
 db = client.gettingStarted              # Database to be used
 # app.logger.debug("Database to be used is... $s:", db)
 
@@ -231,6 +246,8 @@ def test_script():
         script_name = request.form['script']
 
         #import script_name
+
+        flash('loading ...')
         try :
           x=exec(open("todo_app\Test Scripts\\" + script_name).read())
           with open("todo_app\Test Scripts\\" + script_name, 'r') as f:
@@ -244,30 +261,28 @@ def test_script():
 
               image = "wrong.png"
               myquery = {"title": title}
-              newvalues = {"$set": {"Test_script": "Failed"}}
+              newvalues = {"$set": {"Test_script": "Failed", "Test_script_name" : script_name, "Execution_date" : datetime.now().strftime('%d-%m-%Y') }}
               db.newposts.update_one(myquery, newvalues)
 
           elif (test_result == "SUCCESS"):
 
               image = "right.png"
               myquery = {"title": title}
-              newvalues = {"$set": {"Test_script": "Success"}}
+              newvalues = {"$set": {"Test_script": "Success", "Test_script_name" : script_name, "Execution_date" : datetime.now().strftime('%d-%m-%Y')}}
               db.newposts.update_one(myquery, newvalues)
 
           else:
 
               image = "empty2.png"
               myquery = {"title": title}
-              newvalues = {"$set": {"Test_script": "Test not valid"}}
+              newvalues = {"$set": {"Test_script": "Test not valid",  "Test_script_name" : script_name, "Execution_date" : datetime.now().strftime('%d-%m-%Y')}}
               db.newposts.update_one(myquery, newvalues)
 
 
         except FileNotFoundError :
             myquery = {"title": title}
-            newvalues = {"$set": {"Test_script": "testfile not found"}}
+            newvalues = {"$set": {"Test_script": "testfile not found", "Test_script_name" : script_name, "Execution_date" : datetime.now().strftime('%d-%m-%Y')}}
             db.newposts.update_one(myquery, newvalues)
-
-
 
     return redirect("/")
     #return redirect(url_for("index", passed_test_image="wrong.png"))
@@ -310,7 +325,7 @@ def move_to_doing_item():           # Called to move an entry to 'doing' or 'MON
     if (write_permission_user == "britboy4321"):        # Add other names here if you need write access and you are not britboy4321!
         title = request.form['item_title']
         myquery = { "title": title }
-        newvalues = { "$set": { "status": "doing" , "Test_script" : "not started" } }
+        newvalues = { "$set": { "status": "doing" , "Test_script" : "not started", "Test_script_name" : "","Execution_date" : "None"} }
         db.newposts.update_one(myquery, newvalues)
         for doc in db.newposts.find():  
             print(doc)
@@ -338,7 +353,7 @@ def move_to_todo_item():            # Called to move a 'card' BACK to 'Test not 
     if (write_permission_user == "britboy4321"):        # Add other names here if you need write access and you are not britboy4321!
         title = request.form['item_title']
         myquery = { "title": title }
-        newvalues = { "$set": { "status": "todo", "Test_script" : "not started"   } }
+        newvalues = { "$set": { "status": "todo", "Test_script" : "not started", "Test_script_name" : "None", "Execution_date" : "None"   } }
         db.newposts.update_one(myquery, newvalues)
         for doc in db.newposts.find():  
             print(doc)
