@@ -19,7 +19,7 @@
 from flask import Flask, render_template, request, redirect, g, url_for, session
 from flask_login import LoginManager, login_required, current_user
 from flask_login.utils import login_user
-# import autodynatrace
+import autodynatrace
 # Loggly - Temporarily disabled
 
 # import logging.config
@@ -249,8 +249,8 @@ def test_script():
 
         flash('loading ...')
         try :
-          x=exec(open("todo_app\Test Scripts\\" + script_name).read())
-          with open("todo_app\Test Scripts\\" + script_name, 'r') as f:
+          x=exec(open("todo_app\TestScripts\\" + script_name).read())
+          with open("todo_app\TestScripts\\" + script_name, 'r') as f:
               test_result = f.readlines()[-1].strip(" ")
 
           test_result = test_result.strip("print('")
