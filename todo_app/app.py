@@ -249,8 +249,8 @@ def test_script():
 
         flash('loading ...')
         try :
-          x=exec(open("todo_app\TestScripts\\" + script_name).read())
-          with open("todo_app\TestScripts\\" + script_name, 'r') as f:
+          x=exec(open("todo_app\\" + script_name).read())
+          with open("todo_app\\" + script_name, 'r') as f:
               test_result = f.readlines()[-1].strip(" ")
 
           test_result = test_result.strip("print('")
