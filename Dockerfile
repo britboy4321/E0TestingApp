@@ -48,8 +48,10 @@ COPY ./todo_app/test_e2e.py ./todo_app/test_e2e.py
 
 COPY ./Quotetest.py ./Quotetest.py
 COPY ./PricingTest.py ./PricingTest.py
-
-#Install Poetry
+COPY ./todo_app/'Test Scripts'/PricingTest.py ./todo_app/'Test Scripts'/PricingTest.py 
+COPY ./todo_app/'Test Scripts'/QuoteTest.py ./todo_app/'Test Scripts'/QuoteTest.py
+COPY ./todo_app/'Test Scripts'/InvalidTest.py ./todo_app/'Test Scripts'/InvalidTest.py
+#Install Poetry 
 
 RUN poetry config virtualenvs.create false --local && poetry install
 
