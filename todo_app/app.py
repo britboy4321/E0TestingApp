@@ -19,7 +19,7 @@
 from flask import Flask, render_template, request, redirect, g, url_for, session
 from flask_login import LoginManager, login_required, current_user
 from flask_login.utils import login_user
-# import autodynatrace
+import autodynatrace
 # Loggly - Temporarily disabled
 
 # import logging.config
@@ -27,6 +27,8 @@ from flask_login.utils import login_user
 # from loggly.handlers import HTTPSHandler   
 # from logging import Formatter
 import os, sys
+
+import pathlib
 print ("Current working directory : %s" % os.getcwd()    )
 from flask import flash
 # from flask import LoginManager and login required
@@ -86,11 +88,11 @@ login_manager.init_app(app)
 client_id=os.environ["client_id"]                   # Needed for local (non-cloud) execution
 client_secret=os.environ["client_secret"]           # For security
 # app.logger.debug("Getting Mongo connection string")
-mongodb_connection_string = os.environ["MONGODB_CONNECTION_STRING"]    # FOR CLOUD - insert this line later, after LOCAL is running ok.
+# mongodb_connection_string = os.environ["MONGODB_CONNECTION_STRING"]    # FOR CLOUD - insert this line later, after LOCAL is running ok.
 
 
 # app.logger.debug("Setting client")
-client = pymongo.MongoClient(mongodb_connection_string)
+# client = pymongo.MongoClient(mongodb_connection_string)
 db = client.gettingStarted              # Database to be used
 # app.logger.debug("Database to be used is... $s:", db)
 
@@ -249,8 +251,9 @@ def test_script():
 
         flash('loading ...')
         try :
-          x=exec(open("todo_app\\" + script_name).read())
-          with open("todo_app\\" + script_name, 'r') as f:
+
+          x=exec(open(pathlib.Path(__file__).parent / "TestScripts\\" / script_name).read())
+          with open(pathlib.Path(__file__).parent / "TestScripts\\" / script_name, 'r') as f:
               test_result = f.readlines()[-1].strip(" ")
 
           test_result = test_result.strip("print('")
