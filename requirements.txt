@@ -26,7 +26,7 @@ Jinja2==3.0.3
 keyring==21.8.0
 lockfile==0.12.2
 loggly-python-handler==1.0.1
-MarkupSafe==2.0.1
+markupsafe==2.0.1
 msgpack==1.0.2
 packaging==20.4
 pastel
@@ -68,6 +68,5 @@ blinker==1.4
 cryptography>=3.0.0
 oauthlib
 dnspython
-markupsafe==2.0.1
 pytest
 pathlib2
