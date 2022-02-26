@@ -19,7 +19,7 @@
 from flask import Flask, render_template, request, redirect, g, url_for, session
 from flask_login import LoginManager, login_required, current_user
 from flask_login.utils import login_user
-# import autodynatrace
+#import autodynatrace
 # Loggly - Temporarily disabled
 
 # import logging.config
@@ -88,11 +88,11 @@ login_manager.init_app(app)
 client_id=os.environ["client_id"]                   # Needed for local (non-cloud) execution
 client_secret=os.environ["client_secret"]           # For security
 # app.logger.debug("Getting Mongo connection string")
-mongodb_connection_string = os.environ["MONGODB_CONNECTION_STRING"]    # FOR CLOUD - insert this line later, after LOCAL is running ok.
+# mongodb_connection_string = os.environ["MONGODB_CONNECTION_STRING"]    # FOR CLOUD - insert this line later, after LOCAL is running ok.
 
 
 # app.logger.debug("Setting client")
-client = pymongo.MongoClient(mongodb_connection_string)
+# client = pymongo.MongoClient(mongodb_connection_string)
 db = client.gettingStarted              # Database to be used
 # app.logger.debug("Database to be used is... $s:", db)
 
@@ -170,14 +170,14 @@ def index():
     # allow_edit = (current_user.name)
     current_date = datetime.today().strftime('%d-%m-%Y')
     user = str(current_user.name).upper()
-
+    filepath = pathlib.Path(__file__).parent / "TestScripts\\"
 
 
 
     if (current_user_role == "writer"):                 # Can now handle multiple users
         return render_template('indexwrite.html',        # If user allowed to write:
         passed_user_info=user,
-
+        passed_file_path=filepath,
 
         passed_items_todo=mongo_view_model,             # Mongo To Do
         passed_items_doing=mongo_view_model_doing,      # Mongo Doing
