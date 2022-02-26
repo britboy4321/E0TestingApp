@@ -19,7 +19,7 @@
 from flask import Flask, render_template, request, redirect, g, url_for, session
 from flask_login import LoginManager, login_required, current_user
 from flask_login.utils import login_user
-#import autodynatrace
+# import autodynatrace
 # Loggly - Temporarily disabled
 
 # import logging.config
@@ -88,11 +88,11 @@ login_manager.init_app(app)
 client_id=os.environ["client_id"]                   # Needed for local (non-cloud) execution
 client_secret=os.environ["client_secret"]           # For security
 # app.logger.debug("Getting Mongo connection string")
-# mongodb_connection_string = os.environ["MONGODB_CONNECTION_STRING"]    # FOR CLOUD - insert this line later, after LOCAL is running ok.
+mongodb_connection_string = os.environ["MONGODB_CONNECTION_STRING"]    # FOR CLOUD - insert this line later, after LOCAL is running ok.
 
 
 # app.logger.debug("Setting client")
-# client = pymongo.MongoClient(mongodb_connection_string)
+client = pymongo.MongoClient(mongodb_connection_string)
 db = client.gettingStarted              # Database to be used
 # app.logger.debug("Database to be used is... $s:", db)
 
