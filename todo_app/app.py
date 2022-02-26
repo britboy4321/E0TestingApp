@@ -252,8 +252,8 @@ def test_script():
         flash('loading ...')
         try :
 
-          x=exec(open(pathlib.Path(__file__).parent / "TestScripts\\" / script_name).read())
-          with open(pathlib.Path(__file__).parent / "TestScripts\\" / script_name, 'r') as f:
+          x=exec(open(pathlib.Path(__file__).parent / "TestScripts//" / script_name).read())
+          with open(pathlib.Path(__file__).parent / "TestScripts//" / script_name, 'r') as f:
               test_result = f.readlines()[-1].strip(" ")
 
           test_result = test_result.strip("print('")
