@@ -15,8 +15,8 @@ script:
 
 # If all is good, prepare production image
 
-# - docker build --target production -f Dockerfile --tag $DOCKERHUB_USERNAME/e0testingapp:prod .                        # Production build
-- docker build --target development --tag $DOCKERHUB_USERNAME/e0testingapp:prod .
+# - docker build --target production -f Dockerfile --tag $DOCKERHUB_USERNAME/e0testingapp:prod .                        
+- docker build --target development --tag $DOCKERHUB_USERNAME/e0testingapp:prod .                   # Production build
 - echo $dockerhub_password | docker login --username $DOCKERHUB_USERNAME --password-stdin
 - echo "Now for the push"
 - echo "----------------"
@@ -25,9 +25,9 @@ script:
 #  Continous deployment
 
 - docker pull britboy4321/e0testingapp:prod      #  Ensure that we have latest version (possibly not required, for safety)
-- docker tag britboy4321/e0testingapp:prod registry.heroku.com/e0testingapp/web  # Tag it ready for Heroku
-- docker login --username=drawlinson48@gmail.com --password=$Heroku_finalpass2 registry.heroku.com
-- docker push registry.heroku.com/e0testingapp/web   # put it onto Heroku
+- docker tag britboy4321/e0testingapp:prod registry.heroku.com/e0testingapp/web  # Tag it ready for Heroku - NOT NEEDED once we move beyond Heroku
+- docker login --username=drawlinson48@gmail.com --password=$Heroku_finalpass2 registry.heroku.com  # Log in to Heroku (not needed when we move beyond Beroku)
+- docker push registry.heroku.com/e0testingapp/web   # put it onto Heroku   (Not needed when we move beyond Heroku)
 
 - echo "CONTINUOUS DEPLOYMENT SETUP COMPLETED"
 - echo "-------------------------------------"
